@@ -1,3 +1,5 @@
+Rails.application.routes.default_url_options[:host] = "localhost:3000"
+
 Rails.application.routes.draw do
   resources :sellers
   resources :listings

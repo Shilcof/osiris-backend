@@ -4,7 +4,7 @@ class ListingsController < ApplicationController
   # GET /listings
   def index
     page_number = params[:q].to_i
-    @listings = Listing.order('created_at DESC').limit(21).offset(page_number*21)
+    @listings = Listing.order('created_at DESC').limit(21).offset(page_number*21).includes(:image_attachment)
 
     render json: @listings
   end
@@ -16,9 +16,12 @@ class ListingsController < ApplicationController
 
   # POST /listings
   def create
-    @listing = Listing.new(listing_params)
-
+    @listing = Listing.new(name: params[:name], description: params[:description], seller_id: params[:seller_id])
     if @listing.save
+      if params[:image]
+        @listing.image.purge
+        @listing.image.attach(params[:image])
+      end
       render json: @listing, status: :created, location: @listing
     else
       render json: @listing.errors, status: :unprocessable_entity
