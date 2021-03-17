@@ -3,7 +3,8 @@ class ListingsController < ApplicationController
 
   # GET /listings
   def index
-    @listings = Listing.all
+    page_number = params[:q].to_i
+    @listings = Listing.order('created_at DESC').limit(21).offset(page_number*21)
 
     render json: @listings
   end

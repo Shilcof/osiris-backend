@@ -1,3 +1,3 @@
 class Seller < ApplicationRecord
-    has_many: listings
+    has_many :listings
 end
