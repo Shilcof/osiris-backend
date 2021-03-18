@@ -20,11 +20,13 @@ class ListingsController < ApplicationController
     if @listing.save
       if params[:image]
         @listing.image.purge
-        @listing.image.attach(params[:image])
+        if params[:image].content_type.match(/\Aimage/)
+          @listing.image.attach(params[:image])
+        end
       end
       render json: @listing, status: :created, location: @listing
     else
-      render json: @listing.errors, status: :unprocessable_entity
+      render json: {errors: @listing.errors}, status: :unprocessable_entity
     end
   end
 
