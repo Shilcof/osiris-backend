@@ -4,7 +4,7 @@ class ListingsController < ApplicationController
   # GET /listings
   def index
     page_number = params[:q].to_i
-    @listings = Listing.order('created_at DESC').limit(21).offset(page_number*21).includes(:image_attachment)
+    @listings = Listing.order('created_at DESC').limit(21).offset(page_number*21).includes(:image_blob)
 
     render json: @listings
   end
