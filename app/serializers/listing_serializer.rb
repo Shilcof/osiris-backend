@@ -1,6 +1,5 @@
 class ListingSerializer < ActiveModel::Serializer
   include Rails.application.routes.url_helpers
-  # attributes :id, :name, :description
   attributes :id, :name, :description, :image_url
 
   def image_url
