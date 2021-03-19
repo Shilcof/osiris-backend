@@ -8,9 +8,8 @@ class SellersController < ApplicationController
     render json: @sellers
   end
 
-  # GET /sellers/1
-  def show
-    render json: @seller
+  def profile
+    render json: { seller.as_json(:except => [:password_digest]) }, status: :accepted
   end
 
   # POST /sellers
@@ -18,24 +17,13 @@ class SellersController < ApplicationController
     @seller = Seller.new(seller_params)
 
     if @seller.save
-      render json: @seller, status: :created, location: @seller
+      Seller.update(name: seller_params[:email].split("@")[0])
+      
+      token = encode_token(seller_id: seller.id)
+      render json: { seller: seller, jwt: token }, status: :created
     else
       render json: @seller.errors, status: :unprocessable_entity
     end
-  end
-
-  # PATCH/PUT /sellers/1
-  def update
-    if @seller.update(seller_params)
-      render json: @seller
-    else
-      render json: @seller.errors, status: :unprocessable_entity
-    end
-  end
-
-  # DELETE /sellers/1
-  def destroy
-    @seller.destroy
   end
 
   private
@@ -46,6 +34,6 @@ class SellersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def seller_params
-      params.require(:seller).permit(:name)
+      params.require(:seller).permit(:email, :password, :password_confirmation)
     end
 end
