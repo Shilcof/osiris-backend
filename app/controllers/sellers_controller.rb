@@ -1,19 +1,14 @@
 class SellersController < ApplicationController
+  skip_before_action :authorized, only: [:create]
   before_action :set_seller, only: [:show, :update, :destroy]
 
-  # GET /sellers
-  def index
-    @sellers = Seller.all
-
-    render json: @sellers
-  end
-
   def profile
-    render json: { seller.as_json(:except => [:password_digest]) }, status: :accepted
+    render json: seller, except: [:password_digest], status: :accepted
   end
 
   # POST /sellers
   def create
+    puts seller_params
     @seller = Seller.new(seller_params)
 
     if @seller.save
@@ -22,7 +17,7 @@ class SellersController < ApplicationController
       token = encode_token(seller_id: seller.id)
       render json: { seller: seller, jwt: token }, status: :created
     else
-      render json: @seller.errors, status: :unprocessable_entity
+      render json: {errors: @seller.errors}, status: :unprocessable_entity
     end
   end
 
