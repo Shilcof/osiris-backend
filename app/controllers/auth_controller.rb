@@ -5,7 +5,7 @@ class AuthController < ApplicationController
         seller = Seller.find_by(email: login_params[:email])
         if seller && seller.authenticate(login_params[:password])
             token = encode_token({ seller_id: seller.id })
-            render json: { data: seller.as_json(:except => [:password_digest]), jwt: token }, status: :accepted
+            render json: {seller: seller, jwt: token }, status: :accepted
         else
             render json: { errors: 'Invalid Credentials.' }, status: :unauthorized
         end

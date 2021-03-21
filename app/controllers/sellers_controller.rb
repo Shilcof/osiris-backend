@@ -3,21 +3,20 @@ class SellersController < ApplicationController
   before_action :set_seller, only: [:show, :update, :destroy]
 
   def profile
-    render json: seller, except: [:password_digest], status: :accepted
+    render json: {seller: current_seller}, status: :accepted
   end
 
   # POST /sellers
   def create
-    puts seller_params
-    @seller = Seller.new(seller_params)
+    seller = Seller.new(seller_params)
 
-    if @seller.save
+    if seller.save
       Seller.update(name: seller_params[:email].split("@")[0])
       
       token = encode_token(seller_id: seller.id)
       render json: { seller: seller, jwt: token }, status: :created
     else
-      render json: {errors: @seller.errors}, status: :unprocessable_entity
+      render json: {errors: seller.errors}, status: :unprocessable_entity
     end
   end
 
