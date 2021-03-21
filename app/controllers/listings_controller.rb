@@ -17,7 +17,7 @@ class ListingsController < ApplicationController
 
   # POST /listings
   def create
-    @listing = Listing.new(name: params[:name], description: params[:description], seller_id: params[:seller_id])
+    @listing = current_seller.listings.build(name: params[:name], description: params[:description])
     if @listing.save
       if params[:image]
         @listing.image.purge
