@@ -19,6 +19,11 @@ SELLERS = [
     "Danny Jackobs"
 ]
 
+AVERAGE_LATLNG = {
+    lat: 51.501364, 
+    lng: -0.141890 
+}
+
 LISTING_START = [
     "Pre-loved",
     "Well used",
