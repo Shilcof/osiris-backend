@@ -49,8 +49,8 @@ ActiveRecord::Schema.define(version: 2021_04_13_110618) do
     t.bigint "seller_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.decimal "latitude"
-    t.decimal "longitude"
+    t.float "latitude"
+    t.float "longitude"
     t.index ["seller_id"], name: "index_listings_on_seller_id"
   end
 

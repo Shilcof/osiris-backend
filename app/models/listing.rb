@@ -7,4 +7,8 @@ class Listing < ApplicationRecord
 
   validates :name, length: { in: 3..30 }, allow_blank: true
   validates :description, length: { in: 50..2000 }, allow_blank: true
+
+  # geokit distance requirements
+  # acts_as_mappable  lng_column_name: :longitude,
+  #                   lat_column_name: :latitude
 end
